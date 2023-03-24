@@ -39,15 +39,14 @@ jobs:
         with:
           context: .
           push: true
-          tags: natanger97/run_my_docker_api:${{ env.APP_VERSION }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/backend:${{ env.APP_VERSION }}
       - name: Deploy to AWS EC2
         uses: appleboy/ssh-action@master
         with:
-          host: <EC2_INSTANCE_PUBLIC_IP> # replace with your EC2 instance's public IP address
-          username: <SSH_USERNAME> # replace with your SSH username
+          host: ${{ secrets.EC2_INSTANCE_PUBLIC_IP }}
+          username: ec2-user
           password: ${{ secrets.SSH_PASSWORD }} # store the SSH password as a secret in the repository
           script: |
-            sudo docker pull natanger97/run_my_docker_api:${{ env.APP_VERSION }}
-            sudo docker stop myapp || true
-            sudo docker rm myapp || true
-            sudo docker run -d --name myapp -p 80:8080 natanger97/run_my_docker_api:${{ env.APP_VERSION }}
+            cd /home/ec2-user/ops-basic-spring
+            sudo /usr/local/bin/docker-compose docker-compose down || true
+            sudo /usr/local/bin/docker-compose docker-compose up -d || true
