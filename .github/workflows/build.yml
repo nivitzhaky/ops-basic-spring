@@ -48,5 +48,5 @@ jobs:
           key: ${{ secrets.SSH_KEY }} # store the SSH password as a secret in the repository
           script: |
             cd /home/ec2-user/ops-basic-spring
-            sudo /usr/local/bin/docker-compose docker-compose down || true
-            sudo /usr/local/bin/docker-compose docker-compose up -d || true
+            sudo /usr/local/bin/docker-compose  down || true
+            sudo /usr/local/bin/docker-compose  up -d || true
